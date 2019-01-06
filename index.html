@@ -13,7 +13,10 @@
     <header class="header--container">
       <nav class="nav--conatiner">
         <aside class="aside--nav_bar">
-          <h1 class="h1--main_title">FOTO<span>FINDER</span></h1>
+          <h1 class="h1--main_title">FOTO
+            <img src="images/foto-finder-logo.svg" alt="foto logo" class="foto-logo">
+            <span>FINDER</span>
+          </h1>
         </aside>
         <aside class="aside--nav_bar">
           <fieldset class="search-bar">
@@ -30,23 +33,20 @@
       <section class="section--input_container section-wrapper">
         <fieldset class="fieldset--container">
           <form>
-            <label for="idea-title" class="label-spacing">Title</label>
-            <input type="text" name="idea-title" class="title-input inputs">
+            <label for="foto-title" class="label-spacing">Title</label>
+            <input type="text" name="foto-title" class="title-input inputs">
           </form>
         </fieldset>
         <fieldset class="fieldset--container">
           <form>
-            <label for="foto-caption" class="label-spacing">Body</label>
-            <input type="text" name="foto-caption" id="ideaId" class="caption-input inputs">
+            <label for="foto-caption" class="label-spacing">Caption</label>
+            <input type="text" name="foto-caption" id="fotoId" class="caption-input inputs">
           </form>
         </fieldset>
-        <button type="submit" name="save-idea" class="submit-btn" id="submitBtn">Save</button>
-        <fieldset id="quality-filter" class="fieldset--button_filters">
-          <button data-quality="Dung" class="filter-btn" type="submit">Dung</button>
-          <button data-quality="Swill" class="filter-btn" type="submit">Swill</button>
-          <button data-quality="Plausible" class="filter-btn" type="submit">Plausible</button>
-          <button data-quality="Genius" class="filter-btn" type="submit">Genius</button>
-          <button data-quality="Crazy" class="filter-btn" type="submit">Crazy</button>
+        <button type="submit" name="choose-file" class="submit-btn" id="submitBtn">Choose File</button>
+        <fieldset id="foto-filter" class="button-filters">
+          <button class="filter-btn" type="submit">View 1 Favorite</button>
+          <button class="filter-btn" type="submit">Add To Album</button>
         </fieldset>
       </section>
     </main>
