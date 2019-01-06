@@ -2,10 +2,63 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>Foto Finder</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
     <link rel="stylesheet" type="text/css" media="screen" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
   </head>
   <body>
+    <header class="header--container">
+      <nav class="nav--conatiner">
+        <aside class="aside--nav_bar">
+          <h1 class="h1--main_title">FOTO<span>FINDER</span></h1>
+        </aside>
+        <aside class="aside--nav_bar">
+          <fieldset class="search-bar">
+            <input type="text" class="searchTerm" placeholder="Search">
+            <button type="submit" class="searchButton">
+              <i class="fa fa-search"></i>
+            </button>
+          </fieldset>
+        </aside>
+      </nav>
+    </header><!-- /End Navigation -->
+    <!-- Form field section -->
+    <main class="main--input_forms">
+      <section class="section--input_container section-wrapper">
+        <fieldset class="fieldset--container">
+          <form>
+            <label for="idea-title" class="label-spacing">Title</label>
+            <input type="text" name="idea-title" class="title-input inputs">
+          </form>
+        </fieldset>
+        <fieldset class="fieldset--container">
+          <form>
+            <label for="foto-caption" class="label-spacing">Body</label>
+            <input type="text" name="foto-caption" id="ideaId" class="caption-input inputs">
+          </form>
+        </fieldset>
+        <button type="submit" name="save-idea" class="submit-btn" id="submitBtn">Save</button>
+        <fieldset id="quality-filter" class="fieldset--button_filters">
+          <button data-quality="Dung" class="filter-btn" type="submit">Dung</button>
+          <button data-quality="Swill" class="filter-btn" type="submit">Swill</button>
+          <button data-quality="Plausible" class="filter-btn" type="submit">Plausible</button>
+          <button data-quality="Genius" class="filter-btn" type="submit">Genius</button>
+          <button data-quality="Crazy" class="filter-btn" type="submit">Crazy</button>
+        </fieldset>
+      </section>
+    </main>
+    <main class="main--idea_feed">
+      <section class="section--idea_container section-wrapper">
+      </section>
+    </main><!-- /End Main -->
+    <footer class="footer--container">
+    </footer><!-- /End Footer -->
+    <!-- JAVASCRIPT -->
+    <script type="text/javascript" src="photo.js"></script>
+    <script type="text/javascript" src="main.js"></script>
 
   </body>
 </html>
