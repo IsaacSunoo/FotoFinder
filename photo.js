@@ -15,8 +15,13 @@ class Photo {
     localStorage.removeItem(this.id);
   }
 
-  updatePhoto() {
-    
+  updatePhoto(updatedContent, type) {
+    console.log("Update content: " + this);
+    if (type === 'title') {
+      this.title = updatedContent;
+    } else if (type === 'body') {
+      this.body = updatedContent;
+    }
   }
 
 }
