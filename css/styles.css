@@ -212,7 +212,7 @@ footer {
 .submit-btn {
   background-color: #5B4447;
   color: #FFFFFF;
-  height: 43px;
+  height: 46px;
   width: 100%;
   margin-bottom: 23px;
   font-size: 1em;
@@ -232,7 +232,8 @@ footer {
 }
 
 .button-filters {
-  display: block;
+  display: flex;
+  justify-content: space-between;
   width:100%;
   padding: 0;
 }
@@ -240,8 +241,8 @@ footer {
 .filter-btn {
   background-color: #5B4447;
   color: #FFFFFF;
-  height: 43px;
-  width: 45%;
+  height: 46px;
+  width: 40%;
   margin-bottom: 23px;
   font-size: 1em;
   border-radius: 5px;
@@ -249,10 +250,6 @@ footer {
 
 .filter-btn:nth-child(4) {
   width:50%;
-}
-
-.filter-btn:last-child {
-  width:49%;
 }
 
 /* END Form Area */
@@ -350,21 +347,19 @@ footer {
     padding: 1.5em
   }
 
+  .button-filters {
+    flex-direction: column;
+  }
+
   .filter-btn {
     height: 35px;
     width: 100%;
     font-size: 1em;
   }
 
-  .filter-btn:nth-child(4) {
-    width: 100%;
-  }
-
-  .filter-btn:last-child {
-    width: 100%;
-  }
 
 }
+
 @media screen and (max-width: 340px) {
 
   /* Nav Bar */
