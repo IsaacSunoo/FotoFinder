@@ -1,64 +1,44 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Foto Finder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,800" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800" rel="stylesheet">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" >
-    <link rel="stylesheet" type="text/css" media="screen" href="css/normalize.css" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/styles.css" />
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/styles.css">
   </head>
   <body>
-    <header class="header--container">
-      <nav class="nav--conatiner">
-        <aside class="aside--nav_bar">
-          <h1 class="h1--main_title">FOTO
-            <img src="images/foto-finder-logo.svg" alt="foto logo" class="foto-logo">
-            <span>FINDER</span>
-          </h1>
-        </aside>
-        <aside class="aside--nav_bar">
-          <fieldset class="search-bar">
-            <input type="text" class="searchTerm" placeholder="Search">
-            <button type="submit" class="searchButton">
-              <i class="fa fa-search"></i>
-            </button>
-          </fieldset>
-        </aside>
-      </nav>
-    </header>
-
-    <main class="main--input_forms">
-      <section class="section--input_container section-wrapper">
-        <fieldset class="fieldset--container">
-          <form>
-            <label for="foto-title" class="label-spacing">Title</label>
-            <input type="text" name="foto-title" class="title-input inputs">
-          </form>
-        </fieldset>
-        <fieldset class="fieldset--container">
-          <form>
-            <label for="foto-caption" class="label-spacing">Caption</label>
-            <input type="text" name="foto-caption" id="fotoId" class="caption-input inputs">
-          </form>
-        </fieldset>
-        <button type="subimt" name="choose-file" class="submit-btn" id="submitBtn">Choose File</button>
-        <article id="foto-filter" class="button-filters">
-          <button class="filter-btn" type="">View 1 Favorite</button>
-          <button class="filter-btn" type="">Add To Album</button>
-        </article>
+    <nav>
+      <section class="title">FOTO <img src="images/foto-finder-logo.svg" class="camera-logo">
+        FINDER
       </section>
-    </main>
+      <section class="search-design">
+        <input type="text" class="search" placeholder="Search">
+        <button class="search-icon"><i class="fas fa-search"></i></button>
+      </section>
+    </nav>
+    <article class="flex-center">
+      <form class="form-section">
+        <label for="title-input">Title</label>
+        <input type="text" class="inputs title-input">
+        <label for="caption-input">Caption</label>
+        <input type="text" class="inputs caption-input">
+        <label class="center-width file-label" for="img-upload">Choose File</label>
+        <input type="file" accept="image/*" class="hide file-image">
+        <button class="favorite-button">View Favorite</button>
+        <button class="add-to-album" disabled>Add to Album</button>
+      </form>
+    </article>
+    <input type="file" accept="image/*" class="hide change-image">
     <main class="foto-feed">
-      <section class="foto-container section-wrapper">
-      </section>
+      <h1 class="center-text">Add To Album...</h1>
     </main>
-    <footer class="footer--container">
-    </footer>
-
-    <script type="text/javascript" src="photo.js"></script>
-    <script type="text/javascript" src="main.js"></script>
-
+    <section class="show-more-or-less">
+      <button class="show-more-button">Show More</button>
+    </section>
+    <script src="photo.js"></script>
+    <script src="main.js"></script>
   </body>
 </html>
