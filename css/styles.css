@@ -257,7 +257,7 @@ footer {
     font-size: 4rem;
   }
 
-  nav .search-div {
+  .search-div {
     width: 50%;
   }
 }
@@ -268,7 +268,7 @@ footer {
     font-size: 2.4rem;
   }
 
-  nav .search-div {
+  .search-div {
     width: 95%;
   }
 
