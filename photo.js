@@ -1,18 +1,21 @@
 class Photo {
-  constructor(id, title, caption, file, fav) {
+  constructor(id, title, caption, file, favorite) {
     this.id = id;
     this.title = title;
-    this.caption = inCaption;
-    this.file = inURL || 'nothing';
-    this.favorite = inFav || false;
+    this.caption = caption;
+    this.file = file || 'nothing';
+    this.favorite = favorite || false;
   }
 
-  saveToStorage(photos, new) {
+  saveToStorage(photos) {
     localStorage.setItem('imgs', JSON.stringify(photos));
   }
 
-  deleteFromStorage(photos, index) {
-    imgArr.splice(index, 1);
+  deleteFromStorage(photos, id) {
+    let index = photos.findIndex(function(photo){
+      return id === photo.id;
+    });
+    photos.splice(index, 1);
     this.saveToStorage(photos);
   }
 

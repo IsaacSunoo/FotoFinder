@@ -4,7 +4,9 @@ const cardArea = document.querySelector('.foto-feed');
 const albumBtn = document.querySelector('.add-to-album');
 const favButton = document.querySelector('.card-fav');
 const viewFavButton = document.querySelector('.favorite-button');
-const searchEle = document.querySelector('.search');
+const searchInput = document.querySelector('.search-input');
+const titleInput = document.querySelector('.title-input');
+const captionInput = document.querySelector('.caption-input');
 const showMoreBtn = document.querySelector('.show-more');
 const showLessBtn = document.querySelector('.show-less-button')
 const moreLessBtn = document.querySelector('.show-more-or-less');
@@ -14,30 +16,18 @@ const body = document.querySelector('body');
 const cards = document.querySelector('card');
 const inputs = document.querySelectorAll('.inputs');
 const reader = new FileReader();
-const images = photos();
 const photoArray = [];
 
 window.onload = init;
 albumBtn.addEventListener('click', saveImage);
-cardArea.addEventListener('mouseout', mouseOut);
-cardArea.addEventListener('mouseup', (e) => deleteOut(e));
 cardArea.addEventListener('click', clickedCardArea);
-cardArea.addEventListener('mousedown', deleteImage);
 cardArea.addEventListener('focusout', editPhotoText);
 cardArea.addEventListener('keypress', editPhotoText);
 fileInput.addEventListener('change', uploadFile);
-reader.addEventListener('load', () => images().add(reader.result));
-searchEle.addEventListener('keyup', search)
+searchInput.addEventListener('keyup', searchForCards)
 viewFavButton.addEventListener('click', (filterFavs));
 uploadButton.addEventListener('click', fileInputClick);
-
 changeImage.addEventListener('change', switchImage);
-body.addEventListener('click', clickedBody);
-inputs.forEach(e => {
-  e.addEventListener('keyup', () => {
-    checkCanSubmit();
-  })
-});
 
 function init() {
   loadLocalStorage();
@@ -46,13 +36,14 @@ function init() {
   updateFavButtonCount();
 }
 
-function arrayAlter(image, photoArray) {
-  return {
-    add: (file) => imagesVariables[0].stagedImg = stage(file),
-    remove: (id) => remove(id),
-    get: imagesVariables[1],
-    asArray: () => (photoArray),
-    showPhotos: () => showPhotos(images, photoArray)
+function loadLocalStorage() {
+  if (localStorage.getItem('imgs') !== null) {
+    const tempImgsArr = JSON.parse(localStorage.getItem('imgs'));
+    tempImgsArr.forEach(ele => {
+      const card = new Photo(ele.id, ele.title, ele.caption, ele.file, ele.favorite);
+      addToDOM(card);
+      photoArray.push(card);
+    });
   }
 }
 
@@ -65,12 +56,6 @@ function anyCards() {
   }
 }
 
-function clickedBody(e) {
-  if (e.target.closest(moreLessBtn)) {
-    showMoreOrLess(e);
-  }
-}
-
 function clickedCardArea(e) {
   if (e.target.closest('.card-fav')) favBtn(e);
   if (e.target.closest('.card-trash')) deleteBtn(e);
@@ -78,23 +63,23 @@ function clickedCardArea(e) {
 }
 
 function cardImg(e) {
-  images().get.changeImgId = e.target.closest('.card').dataset.id;
+  photoArray.get.changeImgId = e.target.closest('.card').dataset.id;
   changeImage.click();
 }
 
 function deleteBtn(e) {
-  e.target.src = e.target.attributes.src.value == 'imgs/delete-active.svg' ? 'imgs/delete.svg' : 'imgs/delete-active.svg';
+  e.target.src = e.target.attributes.src.value == 'images/delete-active.svg' ? 'images/delete.svg' : 'images/delete-active.svg';
 }
 
 function favBtn(e) {
   const id = e.target.closest('.card').dataset.id;
-  const idx = images().asArray().findIndex(e => e.id == id);
-  const fav = !images().asArray()[atThisIndex].favorite;
+  const idx = photoArray.findIndex(e => e.id == id);
+  const fav = !photoArray[idx].favorite;
 
-  e.target.src = fav ? 'imgs/favorite-active.svg' : 'imgs/favorite.svg';
-  images().asArray()[idx].favorite = fav;
+  e.target.src = fav ? 'images/favorite-active.svg' : 'images/favorite.svg';
+  photoArray[idx].favorite = fav;
   updateFavButtonCount();
-  images().asArray()[idx].saveToStorage(images().asArray());
+  photoArray[idx].saveToStorage(photoArray);
 }
 
 function fileInputClick(e) {
@@ -110,11 +95,11 @@ function photos() {
     changeImgId: 0
   }]
   return () => {
-    return arrayAlter(image, photoArray);
+    return arrayAlter(images, photoArray);
   }
 }
 
-function SwitchImage() {
+function switchImage() {
   upload(changeImage.files, true);
 }
 
@@ -130,74 +115,56 @@ function filterFavs(e) {
   }
 }
 
-function loadLocalStorage() {
-  if (localStorage.getItem('imgs') !== null) {
-    const tempImgsArr = JSON.parse(localStorage.getItem('imgs'));
-    tempImgsArr.forEach(ele => {
-      const tempCard = new Photo(ele.id, ele.title, ele.caption, ele.file, ele.favorite);
-      images().asArray().push(tempCard);
-    });
-  }
-}
+// function deleteImage(e) {
+//   if (e.target.closest('.card-trash')) {
+//     e.target.src = e.target.attributes.src.value == 'images/delete-active.svg' ? 'images/delete.svg' : 'images/delete-active.svg';
+//   }
+// }
 
-function deleteImage(e) {
-  if (e.target.closest('.card-trash')) {
-    e.target.src = e.target.attributes.src.value == 'imgs/delete-active.svg' ? 'imgs/delete.svg' : 'imgs/delete-active.svg';
-  }
-}
+function clickedFavButton(e) {
+  const id = e.target.closest('.card').dataset.id;
+  const index = photoArray.findIndex(e => e.id == inId);
+  const favorite = photoArray[index].favorite;
 
-function mouseOut(clicked) {
-  if (clicked.target.closest('.card-trash')) {
-    clicked.target.src = 'imgs/delete.svg';
-  }
-}
-
-function deleteOut(e) {
-  if (e.target.closest('.card-trash') &&
-    e.target.attributes.src.value === 'imgs/delete-active.svg') {
-    images().remove(e.target.closest('.card').dataset.id);
-    e.target.closest('.card').remove();
-    anyCards();
-  }
+  e.target.src = favorite ? 'images/favorite-active.svg' : 'images/favorite.svg';
+  photoArray[index].favorite = favorite;
   updateFavButtonCount();
+  photoArray[index].saveToStorage(photoArray);
 }
 
 function saveImage(e) {
   e.preventDefault();
-  images().showPhotos();
+  photoArray.showPhotos();
 }
 
-function search() {
+function searchForCards() {
   removeCardsFromDOM();
-  const isNotFavView = viewFavButton.innerText.includes('View');
-  if (isNotFavView) {
-    showAll();
-  } else {
-    showFavorite();
+  let search = searchInput.value.toUpperCase();
+  let filteredPhotos = photoArray.filter( photo => {
+  let cardTitle = photo.title.toUpperCase();
+  let cardCaption = photo.caption.toUpperCase();
+  return  cardCaption.includes(search) || cardTitle.includes(search);
+});
+// cardArea.innerHTML = '';
+filteredPhotos.forEach(function(filteredPhoto) {
+  addToDOM(filteredPhoto);
+});
   }
-  displayFilter();
-}
+  // displayFilter();
 
 function showOnlyTen() {
   removeCardsFromDOM();
-  images().asArray().filter((idea, index) => {
-    return index >= images().asArray().length - 10;
+  photoArray.filter((idea, index) => {
+    return index >= photoArray.length - 10;
   }).forEach(idea => addToDOM(idea));
 }
 
 function showAll() {
-  images().asArray().forEach(e => addToDOM(e));
-}
-
-function displayFilter() {
-  cards.forEach(obj => {
-    !obj.innerText.includes(event.target.value) &&
-      obj.closest('.card').remove();
-  });
+  photoArray.forEach(val => addToDOM(val));
 }
 
 function showFavorite() {
-  const favCards = images().asArray().filter(e => {
+  const favCards = photoArray.filter(e => {
     return e.favorite;
   })
   favCards.forEach(e => addToDOM(e));
@@ -209,7 +176,7 @@ function uploadFile(e) {
 }
 
 function updateFavButtonCount() {
-  const favs = images().asArray().filter(e => e.favorite === true).length;
+  const favs = photoArray.filter(e => e.favorite === true).length;
   viewFavButton.innerText = `View ${favs} Favorites`;
 }
 
@@ -230,17 +197,21 @@ function clearInput() {
   fileInput.value = '';
 }
 
-function remove(id) {
-  const imgArr = images().asArray();
-  const tempIndex = findIndex(id);
-  imgArr[tempIndex].deleteFromStorage(imgArr, tempIndex);
+function deleteCard(cardId) {
+  var thisCard = document.querySelector(`.card[data-id="${cardId}"]`);
+  console.log(thisCard);
+  thisCard.remove();
+  var deletedPhoto = photoArray.find((photo)=> {
+    return cardId === photo.id;
+  });
+  deletedPhoto.deleteFromStorage(photoArray, deletedPhoto.id);
 }
 
 function stage(file) {
-  const lastElementIndex = images().asArray().length - 1;
+  const lastElementIndex = photoArray.length - 1;
   let id = 0;
-  if (images().asArray().length > 0) {
-    id = parseInt(images().asArray()[lastElementIndex].id) + 1;
+  if (photoArray.length > 0) {
+    id = parseInt(photoArray[lastElementIndex].id) + 1;
   }
   const title = titleInput.value;
   const caption = captionInput.value;
@@ -250,7 +221,7 @@ function stage(file) {
 
 function showMore(e) {
   removeCardsFromDOM();
-  images().asArray().forEach(img => addToDOM(img));
+  photoArray.forEach(img => addToDOM(img));
   showMoreBtn.classList.value = 'show-less-button';
   showLessBtn.innerText = 'Show Less';
   updateFavButtonCount();
@@ -278,12 +249,12 @@ function removeCardsFromDOM() {
 
 function changeCardImg(id, src) {
   document.querySelector(`.card[data-id='${id}'] img`).src = src;
-  images().asArray()[findIndex(id)].updatePhoto(src, images().asArray());
+  photoArray[findIndex(id)].updatePhoto(src, photoArray);
 
 }
 
 function findIndex(id) {
-  return images().asArray().findIndex(obj => obj.id == id);
+  return photoArray.findIndex(obj => obj.id == id);
 }
 
 function editPhotoText(event) {
@@ -291,11 +262,11 @@ function editPhotoText(event) {
   let title = document.querySelector(`.card[data-id='${cardId}'] .card-title`).innerText;
   let caption = document.querySelector(`.card[data-id='${cardId}'] .card-desc`).innerText;
   if (event.keyCode === 13) {
-    images().asArray().forEach(card => {
+    photoArray.forEach(card => {
       if (card.id == cardId) {
         card.title = title;
         card.caption = caption;
-        card.saveToStorage(images().asArray());
+        card.saveToStorage(photoArray);
       }
     });
     event.target.blur();
@@ -303,11 +274,11 @@ function editPhotoText(event) {
 
   if (event.target.classList.contains('card-title') ||
     event.target.classList.contains('card-desc')) {
-    images().asArray().forEach(card => {
+    photoArray.forEach(card => {
       if (card.id == cardId) {
         card.title = title;
         card.caption = caption;
-        card.saveToStorage(images().asArray());
+        card.saveToStorage(photoArray);
       }
     });
   }
@@ -316,29 +287,40 @@ function editPhotoText(event) {
 function upload(files, image) {
   if (!image) {
     reader.readAsDataURL(files[0]);
+    reader.onload = createPhoto;
   } else {
-    reader2.readAsDataURL(changeImage.files[0]);
+    reader.readAsDataURL(changeImage.files[0]);
   }
 }
 
+function createPhoto (event) {
+  event.preventDefault();
+  const newPhoto = new Photo (Date.now(), titleInput.value, captionInput.value, event.target.result, false);
+  photoArray.push(newPhoto);
+  newPhoto.saveToStorage(photoArray);
+  addToDOM(newPhoto);
+}
+
 function addToDOM(photo) {
-  const tempFav = photo.favorite ? 'favorite-active.svg' : 'favorite.svg';
+  let tempFav = photo.favorite ? 'favorite-active.svg' : 'favorite.svg';
+  fotoFeed.insertAdjacentHTML('afterbegin',
+  `
+    <section class="card" data-id="${photo.id}">
+    <p class="card-title searchable" contenteditable="true">${photo.title}</p>
+      <img src="${photo.file}" class="card-img">
+      <p class="card-desc searchable" contenteditable="true">${photo.caption}</p>
+      <footer>
+        <img onclick="deleteCard(${photo.id})" class="card-trash" src="images/delete.svg">
+        <img class="card-fav" src="images/${tempFav}">
+      </footer>
+    </section>
+  `);
+  clearInputs();
+}
+
+function clearInputs () {
   titleInput.value = '';
   captionInput.value = '';
-  newIdea.classList.add('card');
-  newIdea.dataset.id = photo.id;
-  newIdea.src = newIdea.file;
-  newIdea.innerHTML = `\
-  <section>
-    <p class="card-title searchable" contenteditable="true">${photo.title}</p>
-    <img src="${img.file}"  alt="images upload from users" class="card-img">
-    <p class="card-desc searchable" contenteditable="true">${photo.caption}</p>
-    <footer>
-      <img class="card-trash" src="images/delete.svg">
-      <img class="card-fav" src="images/${tempFav}">
-    </footer>
-  </section>`;
-  fotoFeed.prepend(newIdea);
 }
 
 function checkCanSubmit() {
