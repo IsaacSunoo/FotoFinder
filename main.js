@@ -20,7 +20,7 @@ const photoArray = [];
 
 window.onload = init;
 albumBtn.addEventListener('click', saveImage);
-// cardArea.addEventListener('click', clickedCardArea);
+cardArea.addEventListener('click', clickedCardArea);
 cardArea.addEventListener('focusout', editPhotoText);
 cardArea.addEventListener('keypress', editPhotoText);
 fileInput.addEventListener('change', uploadFile);
