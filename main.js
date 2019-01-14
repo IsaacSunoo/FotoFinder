@@ -20,7 +20,7 @@ const photoArray = [];
 
 window.onload = init;
 albumBtn.addEventListener('click', saveImage);
-cardArea.addEventListener('click', clickedCardArea);
+// cardArea.addEventListener('click', clickedCardArea);
 cardArea.addEventListener('focusout', editPhotoText);
 cardArea.addEventListener('keypress', editPhotoText);
 fileInput.addEventListener('change', uploadFile);
@@ -32,6 +32,7 @@ changeImage.addEventListener('change', switchImage);
 function init() {
   loadLocalStorage();
   showOnlyTen();
+  addToAlbumTxt();
   anyCards();
   updateFavButtonCount();
 }
@@ -105,7 +106,7 @@ function switchImage() {
 
 function filterFavs(e) {
   e.preventDefault();
-  removeCardsFromDOM();
+  clearFeedHTML();
   if (viewFavButton.innerText.includes('View')) {
     showFavorite();
     viewFavButton.innerText = 'Show All';
@@ -114,12 +115,6 @@ function filterFavs(e) {
     showAll();
   }
 }
-
-// function deleteImage(e) {
-//   if (e.target.closest('.card-trash')) {
-//     e.target.src = e.target.attributes.src.value == 'images/delete-active.svg' ? 'images/delete.svg' : 'images/delete-active.svg';
-//   }
-// }
 
 function clickedFavButton(e) {
   const id = e.target.closest('.card').dataset.id;
@@ -138,22 +133,20 @@ function saveImage(e) {
 }
 
 function searchForCards() {
-  removeCardsFromDOM();
+  clearFeedHTML();
   let search = searchInput.value.toUpperCase();
   let filteredPhotos = photoArray.filter( photo => {
   let cardTitle = photo.title.toUpperCase();
   let cardCaption = photo.caption.toUpperCase();
   return  cardCaption.includes(search) || cardTitle.includes(search);
 });
-// cardArea.innerHTML = '';
 filteredPhotos.forEach(function(filteredPhoto) {
   addToDOM(filteredPhoto);
 });
   }
-  // displayFilter();
 
 function showOnlyTen() {
-  removeCardsFromDOM();
+  clearFeedHTML();
   photoArray.filter((idea, index) => {
     return index >= photoArray.length - 10;
   }).forEach(idea => addToDOM(idea));
@@ -220,7 +213,7 @@ function stage(file) {
 }
 
 function showMore(e) {
-  removeCardsFromDOM();
+  clearFeedHTML();
   photoArray.forEach(img => addToDOM(img));
   showMoreBtn.classList.value = 'show-less-button';
   showLessBtn.innerText = 'Show Less';
@@ -243,7 +236,7 @@ function showMoreOrLess(e) {
   return true;
 }
 
-function removeCardsFromDOM() {
+function clearFeedHTML() {
   fotoFeed.innerHTML = '';
 }
 
@@ -303,7 +296,7 @@ function createPhoto (event) {
 
 function addToDOM(photo) {
   let tempFav = photo.favorite ? 'favorite-active.svg' : 'favorite.svg';
-  
+
   fotoFeed.insertAdjacentHTML('afterbegin',
   `
     <section class="card" data-id="${photo.id}">
@@ -317,6 +310,15 @@ function addToDOM(photo) {
     </section>
   `);
   clearInputs();
+}
+
+function addToAlbumTxt() {
+  if (fotoFeed.childElementCount < 1) {
+    let newElement = document.createElement('h1');
+    newElement.classList.add('text-c');
+    newElement.innerText = 'Add to Album...';
+    fotoFeed.appendChild(newElement);
+  }
 }
 
 function clearInputs () {

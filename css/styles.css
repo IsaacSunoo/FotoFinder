@@ -199,7 +199,7 @@ button, input, label {
 }
 
 .card:hover {
-  box-shadow: 10px 10px;
+  box-shadow: 2px 2px;
   border: 1.5px solid #938284;
 }
 
