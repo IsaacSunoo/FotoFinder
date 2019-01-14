@@ -288,10 +288,17 @@ function upload(files, image) {
 
 function createPhoto (event) {
   event.preventDefault();
+
   const newPhoto = new Photo (Date.now(), titleInput.value, captionInput.value, event.target.result, false);
   photoArray.push(newPhoto);
   newPhoto.saveToStorage(photoArray);
   addToDOM(newPhoto);
+}
+
+function deleteInnerHtml() {
+  if(!photoArray) {
+    document.querySelector('.remove-text').remove();
+  }
 }
 
 function addToDOM(photo) {
@@ -316,6 +323,7 @@ function addToAlbumTxt() {
   if (fotoFeed.childElementCount < 1) {
     let newElement = document.createElement('h1');
     newElement.classList.add('text-c');
+    newElement.classList.add('remove-text');
     newElement.innerText = 'Add to Album...';
     fotoFeed.appendChild(newElement);
   }
