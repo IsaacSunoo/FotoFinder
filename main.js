@@ -303,6 +303,7 @@ function createPhoto (event) {
 
 function addToDOM(photo) {
   let tempFav = photo.favorite ? 'favorite-active.svg' : 'favorite.svg';
+  
   fotoFeed.insertAdjacentHTML('afterbegin',
   `
     <section class="card" data-id="${photo.id}">
